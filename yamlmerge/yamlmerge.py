@@ -1,6 +1,5 @@
 from __future__ import print_function, absolute_import, unicode_literals, division
 
-
 import yaml
 from yaml import MarkedYAMLError
 import glob
@@ -9,12 +8,14 @@ import logging
 import six
 import collections
 
+
 class NoDefault(object):
     def __str__(self):
         return "No default data"
 
 
 NO_DEFAULT = NoDefault()
+
 
 def read_version_from_json_file():
     try:
@@ -23,6 +24,7 @@ def read_version_from_json_file():
     except ValueError:
         print("Json File Not Valid: setting version to 0.0.0")
         return "0.0.0"
+
 
 __version__ = read_version_from_json_file()
 
@@ -54,7 +56,7 @@ def data_merge(a, b, unique_list=False, key_on='name'):
                 a.append(b)
             if unique_list:
                 if len(a) > 0 and isinstance(a[0], dict):
-                    a = {v[key_on]:v for v in a}.values()
+                    a = {v[key_on]: v for v in a}.values()
                 else:
                     a = list(set(a))
         elif isinstance(a, dict):
@@ -131,6 +133,7 @@ def yaml_load(source, defaultdata=NO_DEFAULT, unique_list=False, key_on='name'):
 
     return data
 
+
 def construct_ordereddict(loader, node):
     try:
         omap = loader.construct_yaml_omap(node)
@@ -161,6 +164,7 @@ def represent_str(dumper, data):
         return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
+
 def cli():
     import optparse
     parser = optparse.OptionParser(usage="%prog [options] source...",
@@ -188,11 +192,14 @@ def cli():
         yaml.SafeDumper.add_representer(collections.OrderedDict, represent_ordereddict)
         yaml.SafeDumper.add_representer(str, represent_str)
         if six.PY2:
+            # pylint: disable=undefined-variable
             yaml.SafeDumper.add_representer(unicode, represent_str)
-        print(yaml.safe_dump(yaml_load(args, defaultdata={}, unique_list=options.unique_list, key_on=options.key_on),
-                        indent=2, default_flow_style=False, canonical=False))
+        print(yaml.safe_dump(yaml_load(
+            args, defaultdata={}, unique_list=options.unique_list, key_on=options.key_on), 
+            indent=2, default_flow_style=False, canonical=False))
     except Exception as e:
         parser.error(e)
+
 
 if __name__ == "__main__":
     cli()
