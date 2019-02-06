@@ -13,7 +13,7 @@ simpler to maintain.
 Install from source
 
 ```
-pip install https://github.com/almoore/yamlmerge.git
+pip install git+https://github.com/almoore/yamlmerge.git
 ```
 
 Or clone and install from local repo.
