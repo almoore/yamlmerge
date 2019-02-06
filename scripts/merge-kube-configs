@@ -1,0 +1,8 @@
+#!/bin/sh
+mkdir -p ~/.kube/config.d
+date=$(date -u +"%Y-%m-%d")
+if [ -f ~/.kube/config ];then
+  echo "Creating backup ~/.kube/config-${date}.bk"
+  cp -a ~/.kube/config ~/.kube/config-${date}.bk
+fi
+yamlmerge --unique_list ~/.kube/config.d/* > ~/.kube/config
