@@ -195,7 +195,7 @@ def cli():
             # pylint: disable=undefined-variable
             yaml.SafeDumper.add_representer(unicode, represent_str)
         print(yaml.safe_dump(yaml_load(
-            args, defaultdata={}, unique_list=options.unique_list, key_on=options.key_on), 
+            args, defaultdata={}, unique_list=options.unique_list, key_on=options.key_on),
             indent=2, default_flow_style=False, canonical=False))
     except Exception as e:
         parser.error(e)
