@@ -4,6 +4,7 @@ current=$(kubectl config current-context)
 contexts=$(kubectl config get-contexts --no-headers | sed s/\*// |awk '{print $1}')
 for c in $contexts; do
   kubectl config use-context $c
+  mkdir -p ~/.kube/config.d/$(dirname $c)
   kubectl config view --raw --minify > ~/.kube/config.d/${c}.yaml
   echo "Creating ~/.kube/config.d/${c}.yaml"
 done
